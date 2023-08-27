@@ -119,7 +119,7 @@ const OrderScreen = () => {
           </Row>
           <Message variant='success' ><b>Your order successfully placed</b></Message>
           <ListGroup.Item style={{border:'none', margin:'auto'}} >
-            <Image  src={animation} />
+            <Image className='gif'  src={animation} />
           
           </ListGroup.Item>
         </ListGroup.Item>
