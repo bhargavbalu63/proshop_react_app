@@ -2,15 +2,19 @@
 
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Row, Col,ListGroup, Image, Form, Button, Card, Toast } from 'react-bootstrap'
+import {  useSelector } from 'react-redux'
+import { Row, Col,ListGroup, Image,  Card  } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { useGetOrderDetailsQuery } from '../slices/ordersApiSlice'
 import animation from '../assets/animation.gif'
 const OrderScreen = () => {
     const { id: orderId} =useParams()
-    const  { data:order, refetch, isLoading, error} = useGetOrderDetailsQuery(orderId)
-   
+    const  { data:order, isLoading, error} = useGetOrderDetailsQuery(orderId)
+    const cart= useSelector((state)=> state.cart)
+    const {cartItems}= cart
+    const cartt= cartItems.slice()
+    console.log(cartt);
     return   isLoading ?  <Loader /> : error ? <Message variant='danger' />
   :(
     <>
@@ -79,7 +83,7 @@ const OrderScreen = () => {
         </Col>
 
         <Col md={4}>
-          {item.qty} x ${item.price}=${ item.qty * item.price}
+          {item.qty} x ${item.price}=${ (item.qty * item.price).toFixed(2)}
         </Col>
       </Row>
         </ListGroup.Item>
@@ -99,23 +103,23 @@ const OrderScreen = () => {
 
         <ListGroup.Item>
           <Row>
-            <Col>Items</Col>
-            <Col>${order.itemPrice}</Col>
+            <Col>Items Price</Col>
+            <Col>$ {[...cartt].reduce((acc,item)=>acc+item.qty*item.price,0).toFixed(2)}</Col>
           </Row>
 
           <Row>
             <Col>Shipping</Col>
-            <Col>${order.shippingPrice}</Col>
+            <Col>$ {order.shippingPrice}</Col>
           </Row>
 
           <Row>
             <Col>Tax</Col>
-            <Col>${order.taxPrice}</Col>
+            <Col>$ {order.taxPrice}</Col>
           </Row>
 
           <Row>
             <Col>Total</Col>
-            <Col>${order.totalPrice}</Col>
+            <Col>$ {order.totalPrice}</Col>
           </Row>
           <Message variant='success' ><b>Your order successfully placed</b></Message>
           <ListGroup.Item style={{border:'none', margin:'auto'}} >
@@ -133,9 +137,7 @@ const OrderScreen = () => {
     </>
   )
 
-  return (
-    <div>OrderScreen</div>
-  )
+  
 }
 
 export default OrderScreen

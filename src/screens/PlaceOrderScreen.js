@@ -42,7 +42,11 @@ const PlaceOrderScreen = () => {
           totalPrice: cart.totalPrice
       }).unwrap()
       
-      dispatch(clearCartItems())
+      // setTimeout(()=>
+      // {
+      //   dispatch(clearCartItems())
+      // },3000)
+      
      
        
       navigate(`/order/${res._id}`)
@@ -91,7 +95,7 @@ const PlaceOrderScreen = () => {
                       rounded/>
                     </Col>
                     <Col>
-                    <Link to={`/products/${item.product}`}>{item.name}</Link>
+                    <Link to={`/product/${item._id}`}>{item.name}</Link>
                     </Col>
                     <Col md={4}>
                       {item.qty}* ${item.price}= ${(item.qty*item.price).toFixed(2)}
